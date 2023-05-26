@@ -1,6 +1,7 @@
 package com.lzh.community.controller;
 
 import com.lzh.community.common.api.ApiResult;
+import com.lzh.community.model.dto.LoginData;
 import com.lzh.community.model.dto.RegisterData;
 import com.lzh.community.model.entity.User;
 import com.lzh.community.service.UserService;
@@ -32,6 +33,18 @@ public class UserController extends BaseController{
         Map<String, Object> map = new HashMap<>(16);
         map.put("user", user);
         return ApiResult.success(map);
+
+    }
+
+    public ApiResult<Map<String, String>> login(@Valid @RequestBody LoginData loginData){
+
+        String token = userService.executeLogin(loginData);
+        if (ObjectUtils.isEmpty(token)){
+            return ApiResult.failed("账号密码错误");
+        }
+        Map<String, String> map = new HashMap<>(16);
+        map.put("token", token);
+        return ApiResult.success(map, "登陆成功");
 
     }
 }
