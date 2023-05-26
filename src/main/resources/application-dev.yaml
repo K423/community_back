@@ -1,0 +1,18 @@
+server:
+  port: 8080
+
+web:
+  domain: http://localhost
+
+spring:
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    username: root
+    password: lzh123
+    url: jdbc:mysql://localhost:3309/community?serverTimezone=UTC&useSSL=false&useUnicode=true&characterEncoding=utf-8
+    type: com.zaxxer.hikari.HikariDataSource
+
+logging:
+  level:
+    root: info
+    com.lzh.community: debug
