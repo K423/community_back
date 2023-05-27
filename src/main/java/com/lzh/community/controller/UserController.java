@@ -7,14 +7,13 @@ import com.lzh.community.model.entity.User;
 import com.lzh.community.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.ObjectUtils;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.HashMap;
 import java.util.Map;
+
+import static com.lzh.community.jwt.JWT.USER_NAME;
 
 @RestController
 @RequestMapping("/user")
@@ -36,6 +35,7 @@ public class UserController extends BaseController{
 
     }
 
+    @PostMapping("/login")
     public ApiResult<Map<String, String>> login(@Valid @RequestBody LoginData loginData){
 
         String token = userService.executeLogin(loginData);
@@ -46,5 +46,11 @@ public class UserController extends BaseController{
         map.put("token", token);
         return ApiResult.success(map, "登陆成功");
 
+    }
+
+    @GetMapping("/info")
+    public ApiResult<User> getUser(@RequestHeader(value = USER_NAME) String userName){
+        User user = userService.getUserByUsername(userName);
+        return ApiResult.success(user);
     }
 }
