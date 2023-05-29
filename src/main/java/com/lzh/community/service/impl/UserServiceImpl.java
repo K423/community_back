@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.lzh.community.jwt.JWT;
 import com.lzh.community.model.dto.LoginData;
+import com.lzh.community.model.vo.DetailVo;
 import com.lzh.community.utils.MD5Utils;
 import com.lzh.community.common.exception.ApiAsserts;
 import com.lzh.community.mapper.UserMapper;
@@ -11,6 +12,7 @@ import com.lzh.community.model.dto.RegisterData;
 import com.lzh.community.model.entity.User;
 import com.lzh.community.service.UserService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ObjectUtils;
@@ -68,5 +70,14 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
             log.warn("用户不存在or验证失败 ====>{}", loginData.getUsername());
         }
         return token;
+    }
+
+    @Override
+    public DetailVo getUser(String id) {
+
+        DetailVo detailVo = new DetailVo();
+        User user = baseMapper.selectById(id);
+        BeanUtils.copyProperties(user, detailVo);
+        return detailVo;
     }
 }
