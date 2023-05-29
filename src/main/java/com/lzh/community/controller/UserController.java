@@ -53,4 +53,9 @@ public class UserController extends BaseController{
         User user = userService.getUserByUsername(userName);
         return ApiResult.success(user);
     }
+
+    @GetMapping("/logout")
+    public ApiResult<Object> logout(){
+        return ApiResult.success(null, "退出成功");
+    }
 }
