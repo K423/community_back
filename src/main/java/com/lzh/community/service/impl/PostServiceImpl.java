@@ -121,4 +121,9 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post>
 
         return map;
     }
+
+    @Override
+    public List<Post> getRecommend(String id) {
+        return this.baseMapper.selectRecommend(id);
+    }
 }

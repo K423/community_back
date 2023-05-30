@@ -3,7 +3,11 @@ package com.lzh.community.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.lzh.community.jwt.JWT;
+import com.lzh.community.mapper.FollowMapper;
+import com.lzh.community.mapper.PostMapper;
 import com.lzh.community.model.dto.LoginData;
+import com.lzh.community.model.entity.Follow;
+import com.lzh.community.model.entity.Post;
 import com.lzh.community.model.vo.DetailVo;
 import com.lzh.community.utils.MD5Utils;
 import com.lzh.community.common.exception.ApiAsserts;
@@ -13,6 +17,7 @@ import com.lzh.community.model.entity.User;
 import com.lzh.community.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ObjectUtils;
@@ -24,6 +29,11 @@ import java.util.Date;
 @Transactional(rollbackFor = Exception.class)
 public class UserServiceImpl extends ServiceImpl<UserMapper, User>
         implements UserService {
+
+    @Autowired
+    private PostMapper postMapper;
+    @Autowired
+    private FollowMapper followMapper;
 
     @Override
     public User executeRegister(RegisterData registerData) {
@@ -78,6 +88,15 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
         DetailVo detailVo = new DetailVo();
         User user = baseMapper.selectById(id);
         BeanUtils.copyProperties(user, detailVo);
+
+        //用户文章数
+        Long count = postMapper.selectCount(new LambdaQueryWrapper<Post>().eq(Post::getUserId, id));
+        detailVo.setTopicCount(Math.toIntExact(count));
+
+        //粉丝数
+        Long follows = followMapper.selectCount(new LambdaQueryWrapper<Follow>().eq(Follow::getParentId, id));
+        detailVo.setFollowerCount(Math.toIntExact(follows));
+
         return detailVo;
     }
 }

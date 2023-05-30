@@ -7,6 +7,8 @@ import com.lzh.community.model.vo.PostVO;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public interface PostMapper extends BaseMapper<Post> {
     /**
@@ -19,4 +21,12 @@ public interface PostMapper extends BaseMapper<Post> {
      */
     Page<PostVO> selectListAndPage(@Param("page") Page<PostVO> page,
                                    @Param("tab") String tab);
+
+    /**
+     * 获取详情页推荐
+     *
+     * @param id
+     * @return
+     */
+    List<Post> selectRecommend(@Param("id") String id);
 }

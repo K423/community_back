@@ -7,6 +7,7 @@ import com.lzh.community.model.entity.Post;
 import com.lzh.community.model.entity.User;
 import com.lzh.community.model.vo.PostVO;
 
+import java.util.List;
 import java.util.Map;
 
 public interface PostService extends IService<Post> {
@@ -35,4 +36,12 @@ public interface PostService extends IService<Post> {
      * @return
      */
     Map<String, Object> viewTopic(String id);
+
+    /**
+     * 获取随机推荐10篇
+     *
+     * @param id
+     * @return
+     */
+    List<Post> getRecommend(String id);
 }
