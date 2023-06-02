@@ -5,6 +5,7 @@ import com.lzh.community.model.entity.Post2Tag;
 import com.lzh.community.model.entity.Tag;
 
 import java.util.List;
+import java.util.Set;
 
 public interface Post2TagService extends IService<Post2Tag> {
     /**
@@ -23,4 +24,12 @@ public interface Post2TagService extends IService<Post2Tag> {
      * @return
      */
     void createTopicTag(String id, List<Tag> tags);
+
+    /**
+     * 获取标签话题ID集合
+     *
+     * @param id
+     * @return
+     */
+    Set<String> selectTopicIdsByTagId(String id);
 }

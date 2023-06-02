@@ -51,6 +51,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
                 .alias(registerData.getName())
                 .password(registerData.getPass())  //.password(MD5Utils.getPwd(dto.getPass())) 密码加密存储
                 .email(registerData.getEmail())
+                .avatar("https://ui-avatars.com/api/?name=" + registerData.getName() +
+                        "&length=3&background=random&size=164&font-size=0.33&color=random&rounded=true")
                 .createTime(new Date())
                 .status(true)
                         .build();

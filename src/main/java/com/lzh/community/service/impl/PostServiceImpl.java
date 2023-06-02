@@ -46,11 +46,7 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post>
     @Autowired
     private UserService userService;
 
-    @Override
-    public Page<PostVO> getList(Page<PostVO> page, String tab) {
-        // 查询话题
-        Page<PostVO> iPage = this.baseMapper.selectListAndPage(page, tab);
-        // 查询话题的标签
+    private void p2t(Page<PostVO> iPage){
         iPage.getRecords().forEach(topic -> {
             List<Post2Tag> topicTags = post2TagService.selectByTopicId(topic.getId());
             if (!topicTags.isEmpty()) {
@@ -59,6 +55,14 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post>
                 topic.setTags(tags);
             }
         });
+    }
+
+    @Override
+    public Page<PostVO> getList(Page<PostVO> page, String tab) {
+        // 查询话题
+        Page<PostVO> iPage = this.baseMapper.selectListAndPage(page, tab);
+        // 查询话题的标签
+        p2t(iPage);
         return iPage;
     }
 
@@ -118,12 +122,20 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post>
         DetailVo user = userService.getUser(post.getUserId());
         map.put("user", user);
 
-
         return map;
     }
 
     @Override
     public List<Post> getRecommend(String id) {
         return this.baseMapper.selectRecommend(id);
+    }
+
+    @Override
+    public Page<PostVO> searchByKey(String keyword, Page<PostVO> page) {
+        //查询
+        Page<PostVO> ipage = this.baseMapper.searchByKey(page, keyword);
+        //相关标签
+        p2t(ipage);
+        return ipage;
     }
 }

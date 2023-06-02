@@ -10,6 +10,8 @@ import com.lzh.community.service.Post2TagService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Set;
+
 @Service
 public class Post2TagServiceImpl extends ServiceImpl<Post2TagMapper, Post2Tag>
         implements Post2TagService {
@@ -31,5 +33,10 @@ public class Post2TagServiceImpl extends ServiceImpl<Post2TagMapper, Post2Tag>
             post2Tag.setTagId(tag.getId());
             this.baseMapper.insert(post2Tag);
         });
+    }
+
+    @Override
+    public Set<String> selectTopicIdsByTagId(String id) {
+        return this.baseMapper.getTopicIdsByTagId(id);
     }
 }

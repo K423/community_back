@@ -56,4 +56,10 @@ public class Comment implements Serializable {
      */
     @TableField(value = "modify_time", fill = FieldFill.UPDATE)
     private Date modifyTime;
+
+    /**
+     * 评论头像
+     */
+    @TableField(value = "avatar")
+    private String  avatar;
 }

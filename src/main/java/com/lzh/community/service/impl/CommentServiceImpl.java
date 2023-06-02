@@ -37,6 +37,7 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment>
                 .content(commentData.getContent())
                 .topicId(commentData.getTopic_id())
                 .createTime(new Date())
+                .avatar(user.getAvatar())
                 .build();
         this.baseMapper.insert(comment);
         return comment;

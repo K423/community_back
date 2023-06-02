@@ -1,10 +1,12 @@
 package com.lzh.community.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 
 import com.lzh.community.mapper.TagMapper;
 
+import com.lzh.community.model.entity.Post;
 import com.lzh.community.model.entity.Tag;
 import com.lzh.community.service.Post2TagService;
 import com.lzh.community.service.PostService;
@@ -14,6 +16,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+
 @Service
 public class TagServiceImpl extends ServiceImpl<TagMapper, Tag>
         implements TagService {
@@ -38,5 +42,15 @@ public class TagServiceImpl extends ServiceImpl<TagMapper, Tag>
             list.add(tag);
         }
         return list;
+    }
+
+    @Override
+    public Page<Post> selectTopicsByTagId(Page<Post> topicPage, String id) {
+
+        // 获取关联的话题ID
+        Set<String> set = post2TagService.selectTopicIdsByTagId(id);
+        LambdaQueryWrapper<Post> wrapper = new LambdaQueryWrapper<>();
+        wrapper.in(Post::getId, set);
+        return postService.page(topicPage, wrapper);
     }
 }
